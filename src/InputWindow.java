@@ -8,22 +8,22 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 public class InputWindow extends JFrame implements ActionListener {
-
+    //Calling logic class
     Logic algoProcess = new Logic();
-
+        //Instantiation of arrays needed for displaying process.
         String[] sizes = {"3x4", "4x5", "5x6"};
         double[][] inputMatrix;
         String[] solutionMatrix;
         double[][] givenMatrix;
         String[][] logs;
         double[][][] storedProcess;
-
+        //instantiation of counters used for traversing
         int navigationCounter = -1;
         int processCounter = -1;
-
+        // used for instantiation of arrays
         int row = 0;
         int column = 0;
-
+        // used for loops
         int i;
         int j;
 
@@ -41,14 +41,13 @@ public class InputWindow extends JFrame implements ActionListener {
         JButton[][] display;
         JButton[] displaySolution;
         JButton[][] displayLogs;
-        JLabel end = new JLabel("Thank You for Using Our Program");
         JComboBox matrixSize = new JComboBox(sizes);
         GridBagConstraints gbc = new GridBagConstraints();
         GridBagConstraints gbl = new GridBagConstraints();
         GridBagConstraints gbd = new GridBagConstraints();
-
         JTextField[][] inputOne;
         JLabel[][] line;
+        // formatting panel layout
         TitledBorder title;
         Border blackLine = BorderFactory.createLineBorder(Color.BLACK);
         DecimalFormat df = new DecimalFormat("###.####");
@@ -126,8 +125,9 @@ public class InputWindow extends JFrame implements ActionListener {
                 }
             }
         }
-
+        // Enter Button Action
         if(e.getSource() == enterButton){
+            // try catch for error handling
             try {
                 //initialization of inputMatrix
                 inputMatrix = new double[row][column];
@@ -140,14 +140,16 @@ public class InputWindow extends JFrame implements ActionListener {
                     }
                 }
             }catch(NumberFormatException er){
+                // calling error window class
                 ErrorWindow error = new ErrorWindow();
             }
+            //process done calling logic class
             algoProcess.gaussianElimination(inputMatrix);
             solutionMatrix = algoProcess.backSubstitution(inputMatrix);
             logs = algoProcess.getLogs();
             storedProcess = algoProcess.getStoredProcess();
         }
-
+        // traversing through process, forward
         if(e.getSource() == rightButton){
             panelOne.removeAll();
             panelOne.revalidate();
@@ -197,8 +199,8 @@ public class InputWindow extends JFrame implements ActionListener {
                 displayFinalResult(inputMatrix);
             }
         }
-
-        if(e.getSource() == leftButton){
+        // traversing process backwards
+        if(e.getSource() == leftButton) {
             panelOne.removeAll();
             panelOne.revalidate();
             panelTwo.removeAll();
@@ -206,51 +208,52 @@ public class InputWindow extends JFrame implements ActionListener {
             panelLegend.removeAll();
             panelLegend.revalidate();
             frame.repaint();
+            if (navigationCounter != -2) {
+                navigationCounter--;
+                if (navigationCounter == 0) {
+                    frame.setBounds(400, 100, 500, 490);
+                    panelOne.setBounds(0, 50, 485, 400);
+                    displayGivenMatrix(givenMatrix);
+                    panelTwo.setBorder(new EmptyBorder(0, 0, 0, 0));
+                    processCounter = -1;
+                } else if (navigationCounter == 1 || processCounter != row - 1 || navigationCounter == column - 1) {
+                    frame.setBounds(100, 100, 1215, 490);
+                    panelOne.setBounds(0, 50, 700, 400);
+                    title = BorderFactory.createTitledBorder(blackLine, "Process");
+                    title.setTitleJustification(TitledBorder.CENTER);
+                    panelOne.setBorder(title);
+                    panelTwo.setBounds(700, 50, 500, 400);
+                    panelTwo.setLayout(new GridBagLayout());
+                    title = BorderFactory.createTitledBorder(blackLine, "Steps");
+                    title.setTitleJustification(TitledBorder.CENTER);
+                    panelTwo.setBorder(title);
+                    panelLegend.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-            navigationCounter--;
-            if(navigationCounter == 0) {
-                frame.setBounds(400, 100, 500, 490);
-                panelOne.setBounds(0, 50, 485, 400);
-                displayGivenMatrix(givenMatrix);
-                panelTwo.setBorder(new EmptyBorder(0,0,0,0));
-                processCounter = -1;
-            }else if(navigationCounter == 1 || processCounter != row - 1 || navigationCounter == column - 1){
-                frame.setBounds(100, 100, 1215, 490);
-                panelOne.setBounds(0, 50, 700, 400);
-                title = BorderFactory.createTitledBorder(blackLine, "Process");
-                title.setTitleJustification(TitledBorder.CENTER);
-                panelOne.setBorder(title);
-                panelTwo.setBounds(700, 50, 500, 400);
-                panelTwo.setLayout(new GridBagLayout());
-                title = BorderFactory.createTitledBorder(blackLine, "Steps");
-                title.setTitleJustification(TitledBorder.CENTER);
-                panelTwo.setBorder(title);
-                panelLegend.setBorder(new EmptyBorder(0,0,0,0));
 
+                    nextButtonProcess();
+                    nextButtonLogs();
+                    processCounter--;
+                } else {
+                    frame.setBounds(250, 100, 800, 620);
+                    panelOne.setBounds(0, 50, 785, 400);
+                    panelLegend.setBounds(0, 450, 785, 130);
+                    panelLegend.setLayout(new BorderLayout());
+                    title = BorderFactory.createTitledBorder(blackLine, "Legend");
+                    panelLegend.setBorder(title);
+                    title = BorderFactory.createTitledBorder(blackLine, "Final Result");
+                    title.setTitleJustification(TitledBorder.CENTER);
+                    panelOne.setBorder(title);
+                    panelTwo.setBorder(new EmptyBorder(0, 0, 0, 0));
 
-                nextButtonProcess();
-                nextButtonLogs();
-                processCounter--;
-            }else{
-                frame.setBounds(250, 100, 800, 620);
-                panelOne.setBounds(0, 50, 785, 400);
-                panelLegend.setBounds(0,450,785,130);
-                panelLegend.setLayout(new BorderLayout());
-                title = BorderFactory.createTitledBorder(blackLine, "Legend");
-                panelLegend.setBorder(title);
-                title = BorderFactory.createTitledBorder(blackLine, "Final Result");
-                title.setTitleJustification(TitledBorder.CENTER);
-                panelOne.setBorder(title);
-                panelTwo.setBorder(new EmptyBorder(0,0,0,0));
-
-                legendDisplay();
-                displayFinalResult(inputMatrix);
+                    legendDisplay();
+                    displayFinalResult(inputMatrix);
+                }
             }
         }
 
 
     }
-
+    // displaying the process
     public void nextButtonProcess() {
         display = new JButton[row][column];
         for(i = 0; i < storedProcess[processCounter].length; i++ ){
@@ -265,7 +268,7 @@ public class InputWindow extends JFrame implements ActionListener {
             }
         }
     }
-
+    //Displaying the logs steps
     public void nextButtonLogs(){
         displayLogs = new JButton[1][row];
         for(i = 0; i < 1; i++ ){
@@ -279,7 +282,7 @@ public class InputWindow extends JFrame implements ActionListener {
             }
         }
     }
-
+    // displaying the matrix used for user input
     public void gridLayoutOne(int row, int column) {
         inputOne = new JTextField[row][column];
         line = new JLabel[row][column];
@@ -314,8 +317,8 @@ public class InputWindow extends JFrame implements ActionListener {
             }
         }
     }
+    //displaying the final result
     public void displayFinalResult(double[][] inputMatrix){
-
         display = new JButton[row][column];
         displaySolution = new JButton[row];
             for (i = 0; i < row; i++) {
@@ -363,7 +366,7 @@ public class InputWindow extends JFrame implements ActionListener {
             }
 
     }
-
+    // displaying the legend
     public void legendDisplay(){
         buttonLegend = new JButton("Solution");
         buttonLegend.setBackground(Color.green);
@@ -379,7 +382,7 @@ public class InputWindow extends JFrame implements ActionListener {
 
 
     }
-
+    // displaying the entered values in a matrix
     public void displayGivenMatrix(double[][] givenMatrix) {
         title = BorderFactory.createTitledBorder(blackLine, "Given Matrix");
         title.setTitleJustification(TitledBorder.CENTER);
