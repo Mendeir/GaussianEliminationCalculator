@@ -1,7 +1,7 @@
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
-public class Logic {
+public class    Logic {
     private String[][] logs;
     private double[][][] storedProcess;
 
@@ -18,12 +18,6 @@ public class Logic {
         //Fill the array with -
         for (String[] row : logs)
             Arrays.fill(row, "-");
-
-
-
-        System.out.println("Given");
-        Arrays.stream(processGivenArray).forEach(x -> System.out.println(Arrays.toString(x)));
-        System.out.println();
 
         storedProcess = new double[matrixColumn - 1][matrixRow][matrixColumn];
 
@@ -74,8 +68,6 @@ public class Logic {
             ++pivotRow;
             storeProcess(processGivenArray, columnCounter);
         }
-
-        Arrays.stream(logs).forEach(x -> System.out.println(Arrays.toString(x)));
     }
 
     public void swapMatrixRow (double[][] processGivenArray, int firstRow, int secondRow) {
