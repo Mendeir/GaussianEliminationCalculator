@@ -159,15 +159,15 @@ public class InputWindow extends JFrame implements ActionListener {
             panelLegend.revalidate();
             frame.repaint();
 
+            if(navigationCounter != column )
             navigationCounter++;
-
             if(navigationCounter == 0) {
                 frame.setBounds(400, 100, 500, 490);
                 panelOne.setBounds(0, 50, 485, 400);
                 displayGivenMatrix(givenMatrix);
                 panelTwo.setBorder(new EmptyBorder(0,0,0,0));
                 processCounter = -1;
-            }else if(navigationCounter == 1 || processCounter != row - 1){
+            }else if(processCounter != row - 1){
                 frame.setBounds(100, 100, 1215, 490);
                 panelOne.setBounds(0, 50, 700, 400);
                 title = BorderFactory.createTitledBorder(blackLine, "Process");
@@ -208,15 +208,17 @@ public class InputWindow extends JFrame implements ActionListener {
             panelLegend.removeAll();
             panelLegend.revalidate();
             frame.repaint();
-            if (navigationCounter != -2) {
+
+            if (navigationCounter != 0)
                 navigationCounter--;
                 if (navigationCounter == 0) {
+                    navigationCounter = 0;
                     frame.setBounds(400, 100, 500, 490);
                     panelOne.setBounds(0, 50, 485, 400);
                     displayGivenMatrix(givenMatrix);
                     panelTwo.setBorder(new EmptyBorder(0, 0, 0, 0));
                     processCounter = -1;
-                } else if (navigationCounter == 1 || processCounter != row - 1 || navigationCounter == column - 1) {
+                } else if (processCounter != row - 1 || navigationCounter == column - 1) {
                     frame.setBounds(100, 100, 1215, 490);
                     panelOne.setBounds(0, 50, 700, 400);
                     title = BorderFactory.createTitledBorder(blackLine, "Process");
@@ -249,10 +251,9 @@ public class InputWindow extends JFrame implements ActionListener {
                     displayFinalResult(inputMatrix);
                 }
             }
-        }
-
-
     }
+
+
     // displaying the process
     public void nextButtonProcess() {
         display = new JButton[row][column];
